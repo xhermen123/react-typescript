@@ -1,7 +1,8 @@
 /* global window */
 import React, { useState } from "react";
-import { motion, useViewportScroll, useTransform } from "framer-motion";
+import { motion, useViewportScroll, useTransform, MotionValue } from "framer-motion";
 import './Animation.css';
+import { disposeEmitNodes } from "typescript";
 
 function TextMotion() {
   const { scrollYProgress } = useViewportScroll();
@@ -83,20 +84,112 @@ function TextMotion() {
   );
 }
 
-function Envelope({ children }: any) {
+function Envelope({ children, direction, step }: any) {
+  const [ffLayer, setFfLayer] = useState(0);
+
   const { scrollYProgress } = useViewportScroll();
-  const scaleAnim = useTransform(scrollYProgress, [0, 0.5, 1], [1, 1, 0.8]);
-  const yPosAnim = useTransform(scrollYProgress, [0, 1], ['70vh', '0vh']);
+  const imageBottomPosAnim = useTransform(scrollYProgress, [0, 0.3, 1], ['60vh', '60vh', '0vh']);
+  const imageTopPosAnim = useTransform(scrollYProgress, [0, 0.3, 1], ['-60vh', '-60vh', '0vh']);
+  const imageRightPosAnim = useTransform(scrollYProgress, [0, 0.3, 1], ['60vw', '60vw', '0vw']);
+  const imageLeftPosAnim = useTransform(scrollYProgress, [0, 0.3, 1], ['-60vw', '-60vw', '0vw']);
   const opacityAnim = useTransform(scrollYProgress, [0, 0.8, 1], [0, 0, 1]);
-  const widthAnim = useTransform(scrollYProgress, [0, 1], ['100%', '90%']);
+  const sizeAnim = useTransform(scrollYProgress, [0, 0.5, 1], ['100%', '100%', '90%']);
+  // let direction = "left";
+  
+  scrollYProgress.onChange(x => {
+    setFfLayer(x > 0.3 ? 0 : -1)
+  })
 
-  const direction = "bottom";
+  let textSectionStyle = {
+    height: '100vh',
+    flex: '0 0 40vw',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  };
 
-  let tempStyle = {
-    height: '30vh',
+  let imageSectionDefaultStyle = {
+    width: '100%', 
     display: "flex",
     alignItems: "center"
+  }
+
+  let imageDefaultStyle = {
+    objectPosition: "left"
   };
+
+  let imageSectionStyle;
+  let imageStyle;
+  let layoutDirection: any;
+
+  switch(direction) {
+    case "bottom":
+      textSectionStyle.flex = "0 0 40vh";
+      imageSectionStyle = {
+        ...imageSectionDefaultStyle,
+        y: imageBottomPosAnim,
+        justifyContent: "center",
+      };
+      imageStyle = {
+        ...imageDefaultStyle,
+        width: sizeAnim
+      };
+      layoutDirection = "column";
+      break;
+    case "top":
+      textSectionStyle.flex = "0 0 40vh";
+      imageSectionStyle = {
+        ...imageSectionDefaultStyle,
+        y: imageTopPosAnim,
+        justifyContent: "center"
+      };
+      imageStyle = {
+        ...imageDefaultStyle,
+        width: sizeAnim
+      };
+      layoutDirection = "column-reverse";
+      break;
+    case "right":
+      textSectionStyle.flex = "0 0 40vw";
+      imageSectionStyle = {
+        ...imageSectionDefaultStyle,
+        x: imageRightPosAnim,
+        paddingLeft: '100px',
+        justifyContent: "flex-end",
+      };
+      imageStyle = {
+        ...imageDefaultStyle,
+        height: sizeAnim,
+      };
+      layoutDirection = "row";
+      break;
+    case "left":
+      textSectionStyle.flex = "0 0 40vw";
+      imageSectionStyle = {
+        ...imageSectionDefaultStyle,
+        x: imageLeftPosAnim,
+        paddingRight: '100px',
+        justifyContent: "flex-end",
+      };
+      imageStyle = {
+        ...imageDefaultStyle,
+        height: sizeAnim,
+        objectPosition: "right"
+      };
+      layoutDirection = "row-reverse";
+      break;
+    default:
+      textSectionStyle.flex = "0 0 40vh";
+      imageSectionStyle = {
+        ...imageSectionDefaultStyle,
+        y: imageBottomPosAnim,
+        justifyContent: "flex-end",
+      };
+      imageStyle = {
+        ...imageDefaultStyle
+      };
+      layoutDirection = "row";
+  }
 
   return (
     <div
@@ -108,17 +201,20 @@ function Envelope({ children }: any) {
         bottom: "0",
         left: "0",
         objectFit: "cover",
+        display: "flex",
+        flexDirection: layoutDirection,
+        zIndex: ffLayer
       }}
     >
       <motion.div
         style={{
           opacity: opacityAnim,
-          ...tempStyle
+          ...textSectionStyle
         }}
       >
         <div
           style={{
-            display: 'flex',
+            display: (direction == 'bottom' || direction == 'top') ? "flex" : "block",
             color: 'white',
             padding: '50px',
             width: '90%',
@@ -139,9 +235,7 @@ function Envelope({ children }: any) {
             </p>
             <span className="dash-dark-blue"></span>
           </div>
-          <div
-            
-          >
+          <div>
             <p
               style={{
                 fontSize: '24px',
@@ -158,13 +252,12 @@ function Envelope({ children }: any) {
         </div>
       </motion.div>
       <motion.div style={{
-        width: '100%', 
-        y: yPosAnim,
-        textAlign: "center"
+        ...imageSectionStyle
       }}>
         <motion.img 
           style={{
-            width: widthAnim,
+            ...imageStyle,
+            objectFit: "cover"
           }}
           src="/assets/image.jpg"
         />
@@ -174,14 +267,17 @@ function Envelope({ children }: any) {
 }
 
 const letterSceneStyle = {
-  height: "200vh",
+  height: "400vh",
 };
 
 export default function LetterScene() {
   return (
     <div style={letterSceneStyle}>
       <TextMotion></TextMotion>
-      <Envelope></Envelope>
+      <Envelope direction="right" step={1}></Envelope>
+      {/* <Envelope direction="top" step={2}></Envelope>
+      <Envelope direction="left" step={3}></Envelope>
+      <Envelope direction="bottom" step={4}></Envelope> */}
     </div>
   );
 }
