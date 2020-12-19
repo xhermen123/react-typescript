@@ -1,6 +1,6 @@
 /* global window */
 import React, { useState } from "react";
-import { motion, useViewportScroll, useTransform } from "framer-motion";
+import { motion, useViewportScroll, useTransform, useMotionValue } from "framer-motion";
 
 function TextMotion() {
   const { scrollYProgress } = useViewportScroll();
@@ -93,32 +93,112 @@ function TextMotion() {
   );
 }
 
-function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, imageStartHeight, imageEndHeight, startWithFullImage }: any) {
+function getAnimationInputRange(step: number) {
+
+}
+
+function Envelope({ children, imageEndLocation, imageStartLocation, step, totalStep, imageStartWidth, imageEndWidth, imageStartHeight, imageEndHeight, startWithFullImage }: any) {
   const [ffLayer, setFfLayer] = useState(0);
+  const [ffVisibility, setFfVisibility] = useState('hidden');
   const [zoomSize, setZoomSize] = useState(1);
 
   const { scrollYProgress } = useViewportScroll();
 
-  const imageStartFullScreenAndBottomAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['calc(10vh - 50%)', 'calc(10vh - 50%)', 'calc(0vh - 0%)']);
-  const imageStartFullScreenAndTopAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['40vh', '40vh', '0vh']);
-  const imageStartFullScreenAndRightAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['-40vw', '-40vw', '0vw']);
-  const imageStartFullScreenAndLeftAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['40vw', '40vw', '0vw']);
+  let startSlideOpacity = 0;
+  let endSlideOpacity = 0;
 
-  const imageStartFullScreenHeightYAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['100vh', '100vh', '60vh']);
-  const imageStartFullScreenWidthXAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['100vw', '100vw', '60vw']);
+  if (step == 2) {
+    startSlideOpacity = 1;
+  }
 
-  const imageBottomPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['60vh', '60vh', '0vh']);
-  const imageTopPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['-60vh', '-60vh', '0vh']);
-  const imageRightPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['60vw', '60vw', '0vw']);
-  const imageLeftPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['-60vw', '-60vw', '0vw']);
+  if (step == totalStep) {
+    endSlideOpacity = 1;
+  }
 
-  const opacityAnim = useTransform(scrollYProgress, [0, 0.8, 1], [0, 0, 1]);
-  const sizeAnim = useTransform(scrollYProgress, [0, 0.6, 1], ['100%', '100%', '90%']);
+  // Start With Fade
+  const slideFadeInAnim = useTransform(scrollYProgress, [(step - 1) / totalStep, (step - 9 / 10) / totalStep], [0, 1]);
+
+  // End With Fade
+  const slideFadeOutAnim = useTransform(scrollYProgress, [step / totalStep, (step + 1 / 10) / totalStep], [1, 0]);
+
+  // Start & End Fade
+  const slideFadeInOutAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 7 / 10) / totalStep, step / totalStep, (step + 3 / 10) / totalStep, 1], [startSlideOpacity, startSlideOpacity, 1, 1, endSlideOpacity, endSlideOpacity]);
+
+  // Start Animiation Section
+  const imageStartFullScreenAndBottomAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(10vh - 50%)', 'calc(10vh - 50%)', 'calc(0vh - 0%)']);
+  const imageStartFullScreenAndTopAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(90vh - 50%)', 'calc(90vh - 50%)', 'calc(0vh - 0%)']);
+  const imageStartFullScreenAndRightAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(10vw - 50%)', 'calc(10vw - 50%)', 'calc(0vw - 0%)']);
+  const imageStartFullScreenAndLeftAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(50vw - 50%)', 'calc(50vw - 50%)', 'calc(0vw - 0%)']);
+
+  let bottomStartY = '60vh';
+  let bottomStartX = '0vh';
+  let topStartY = '-60vh';
+  let topStartX = '0vh';
+  let rightStartX = '60vw';
+  let rightStartY = '0vw';
+  let leftStartX = '-60vw';
+  let leftStartY = '0vw';
+
+  switch (imageStartLocation) {
+    case "bottom":
+      switch (imageEndLocation) {
+        case "bottom":
+          
+          break;
+        case "top":
+      
+          break;
+        case "right":
+          
+          break;
+        case "left":
+          
+          break;
+        default:
+      }
+
+      break;
+    case "top":
+      
+      break;
+    case "right":
+      
+      break;
+    case "left":
+      
+      break;
+    default:
+     
+  }
+
+  const imageBottomPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartY, bottomStartY, '0vh']);
+  const imageTopPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartY, topStartY, '0vh']);
+  const imageRightPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartX, rightStartX, '0vw']);
+  const imageLeftPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartX, leftStartX, '0vw']);
+
+  const imageBottomPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartX, bottomStartX, '0vw']);
+  const imageTopPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartX, topStartX, '0vh']);
+  const imageRightPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartY, rightStartY, '0vw']);
+  const imageLeftPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartY, leftStartY, '0vw']);
+
+  // Main Animation Section
+  const imageStartFullScreenHeightYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, step / totalStep], ['100vh', '100vh', '60vh']);
+  const imageStartFullScreenWidthXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, step / totalStep], ['100vw', '100vw', '60vw']);
+
+  // End Animation Section
+  const imageEndBottomPosAnim = useTransform(scrollYProgress, [0.5, 0.7], ['0vh', '-100vh']);
+  const imageEndTopPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['-60vh', '-60vh', '0vh']);
+  const imageEndRightPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['60vw', '60vw', '0vw']);
+  const imageEndLeftPosAnim = useTransform(scrollYProgress, [0, 0.4, 1], ['-60vw', '-60vw', '0vw']);
+
+  const textOpacityAnim = useTransform(scrollYProgress, [0, (step - 7 / 10) / totalStep, (step - 3 / 10) / totalStep], [0, 0, 1]);
+  const sizeAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, step / totalStep], ['100%', '100%', '90%']);
   
-  const zoomAnim = useTransform(scrollYProgress, [0, 0.6, 1], [zoomSize, zoomSize, '0.9']);
+  const zoomAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [zoomSize, zoomSize, '0.9']);
 
   scrollYProgress.onChange(x => {
-    setFfLayer(x > 0.3 ? 0 : -1);
+    setFfLayer(x > (step - 1) / totalStep && x < step / totalStep ? 0 : -1);
+    // setFfVisibility(((x > (step - 1) / totalStep) && (x < step / totalStep)) ? 'visible' : 'hidden')
     let animImage = document.getElementById("animation_image");
 
     if (animImage && animImage.clientHeight && animImage.clientWidth) {
@@ -137,12 +217,13 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
   let imageSectionDefaultStyle = {
     width: '100%', 
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "center"
   }
 
   let imageDefaultStyle = {
-    objectPosition: "center top",
-    width: "100vw"
+    objectPosition: "center center",
+    // width: "100vw"
   };
 
   let subTitleStyle = {
@@ -155,17 +236,18 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
   let imageStyle;
   let layoutDirection: any;
 
-  switch(direction) {
+  switch(imageEndLocation) {
     case "bottom":
       textSectionStyle.flex = "0 0 40vh";
     
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
-        y: startWithFullImage ? imageStartFullScreenAndBottomAnim : imageBottomPosAnim,
+        y: startWithFullImage ? imageStartFullScreenAndBottomAnim : imageBottomPosYAnim,
         justifyContent: "center",
       };
       imageStyle = {
         ...imageDefaultStyle,
+        width: "100vw",
         // width: sizeAnim,
         scale: zoomAnim,
         // height: imageStartFullScreenHeightYAnim
@@ -176,13 +258,15 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
       textSectionStyle.flex = "0 0 40vh";
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
-        y: startWithFullImage ? imageStartFullScreenAndTopAnim : imageTopPosAnim,
+        y: startWithFullImage ? imageStartFullScreenAndTopAnim : imageTopPosYAnim,
         justifyContent: "center"
       };
       imageStyle = {
         ...imageDefaultStyle,
-        width: sizeAnim,
-        height: imageStartFullScreenHeightYAnim
+        width: "100vw",
+        scale: zoomAnim,
+        // width: sizeAnim,
+        // height: imageStartFullScreenHeightYAnim
       };
       layoutDirection = "column-reverse";
       break;
@@ -190,14 +274,16 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
       textSectionStyle.flex = "0 0 40vw";
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
-        x: startWithFullImage ? imageStartFullScreenAndRightAnim : imageRightPosAnim,
-        paddingLeft: '100px',
-        justifyContent: "flex-end",
+        x: startWithFullImage ? imageStartFullScreenAndRightAnim : imageRightPosXAnim,
+        // paddingLeft: '100px',
+        // justifyContent: "flex-end",
       };
       imageStyle = {
         ...imageDefaultStyle,
-        height: sizeAnim,
-        width: imageStartFullScreenWidthXAnim,
+        height: "100vh",
+        scale: zoomAnim,
+        // height: sizeAnim,
+        // width: imageStartFullScreenWidthXAnim,
       };
       layoutDirection = "row";
       break;
@@ -205,14 +291,16 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
       textSectionStyle.flex = "0 0 40vw";
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
-        x: startWithFullImage ? imageStartFullScreenAndLeftAnim : imageLeftPosAnim,
-        paddingRight: '100px',
-        justifyContent: "flex-end",
+        x: startWithFullImage ? imageStartFullScreenAndLeftAnim : imageLeftPosXAnim,
+        // paddingRight: '100px',
+        // justifyContent: "flex-start",
       };
       imageStyle = {
         ...imageDefaultStyle,
-        height: sizeAnim,
-        width: imageStartFullScreenWidthXAnim,
+        height: "100vh",
+        scale: zoomAnim,
+        // height: sizeAnim,
+        // width: imageStartFullScreenWidthXAnim,
         objectPosition: "right"
       };
       layoutDirection = "row-reverse";
@@ -221,44 +309,52 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
       textSectionStyle.flex = "0 0 40vh";
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
-        y: startWithFullImage ? imageStartFullScreenAndRightAnim : imageBottomPosAnim,
-        justifyContent: "flex-end",
+        y: startWithFullImage ? imageStartFullScreenAndRightAnim : imageBottomPosYAnim,
+        // justifyContent: "flex-end",
       };
       imageStyle = {
         ...imageDefaultStyle,
-        // width: sizeAnim,
+        width: "100vw",
         scale: zoomAnim,
-        height: imageStartFullScreenHeightYAnim
+        // height: imageStartFullScreenHeightYAnim
       };
       layoutDirection = "row";
   }
 
+  let parentStyle = {
+    width: "100%",
+    height: "100vh",
+    position: useMotionValue("fixed"),
+    bottom: "0",
+    left: "0",
+    objectFit: useMotionValue("cover"),
+    display: "flex",
+    background: "linear-gradient(0deg, #32324ecc, #32324ecc), url(/assets/background.jpg) center/cover no-repeat",
+    flexDirection: layoutDirection,
+    overflow: "hidden",
+    // zIndex: ffLayer,
+    // visibility: useMotionValue(ffVisibility),
+    opacity: 0
+    // y: imageEndBottomPosAnim,
+  };
+
   return (
-    <div
+    <motion.div
       className=""
       style={{
-        width: "100%",
-        height: "100vh",
-        position: "fixed",
-        bottom: "0",
-        left: "0",
-        objectFit: "cover",
-        display: "flex",
-        flexDirection: layoutDirection,
-        background: "linear-gradient(0deg, #32324ecc, #32324ecc), url(/assets/background.jpg)",
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'
+        ...parentStyle,
+        opacity: slideFadeInOutAnim
       }}
     >
       <motion.div
         style={{
-          opacity: opacityAnim,
+          opacity: textOpacityAnim,
           ...textSectionStyle
         }}
       >
         <div
           style={{
-            display: (direction == 'bottom' || direction == 'top') ? "flex" : "block",
+            display: (imageEndLocation == 'bottom' || imageEndLocation == 'top') ? "flex" : "block",
             color: 'white',
             padding: '50px',
             width: '90%',
@@ -317,22 +413,22 @@ function Envelope({ children, direction, step, imageStartWidth, imageEndWidth, i
           src="/assets/image.jpg"
         />
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
 const letterSceneStyle = {
-  height: "300vh",
+  height: "800vh",
 };
 
 export default function LetterScene() {
   return (
     <div style={letterSceneStyle}>
       <TextMotion></TextMotion>
-      {/* <Envelope direction="right" step={1} imageStartWidth="100%" imageEndWidth="50%"></Envelope> */}
-      {/* <Envelope direction="top" step={2}></Envelope> */}
-      {/* <Envelope direction="left" step={3}></Envelope> */}
-      <Envelope direction="bottom" step={4} startWithFullImage={true}></Envelope>
+      <Envelope imageEndLocation="right" imageStartLocation="left" step={2} totalStep={5} imageStartWidth="100%" imageEndWidth="50%" startWithFullImage={true}></Envelope>
+      <Envelope imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope imageEndLocation="left" imageStartLocation="left" step={4} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope>
     </div>
   );
 }
