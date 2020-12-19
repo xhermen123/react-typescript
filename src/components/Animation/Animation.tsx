@@ -104,6 +104,14 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
 
   const { scrollYProgress } = useViewportScroll();
 
+  if (!imageStartWidth) {
+    imageStartWidth = 1;
+  }
+
+  if (!imageEndWidth) {
+    imageEndWidth = 1;
+  }
+
   let startSlideOpacity = 0;
   let endSlideOpacity = 0;
 
@@ -133,7 +141,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
   let bottomStartY = 'calc(60vh - 0%)';
   let bottomStartX = 'calc(0vh - 0%)';
   let topStartY = 'calc(-60vh - 0%)';
-  let topStartX = 'cale(0vh - 9%)';
+  let topStartX = 'cale(0vh - 0%)';
   let rightStartX = 'calc(60vw - 0%)';
   let rightStartY = 'calc(0vw - 0%)';
   let leftStartX = 'calc(-60vw - 0%)';
@@ -147,8 +155,8 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
           bottomStartY = 'calc(50vh - 0%)';
           break;
         case "bottom":
-          // rightStartX = 'calc(10vw - 50%)';
-          // rightStartY = 'calc(0vh - 50%)';
+          bottomStartY = 'calc(60vh - 0%)';
+          bottomStartX = 'calc(0vh - 0%)';
           break;
         case "top":
           topStartX = 'calc(0vw - 0%)';
@@ -177,7 +185,8 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
           bottomStartY = 'calc(-40vh - 100%)';
           break;
         case "top":
-      
+          topStartY = 'calc(-60vh - 0%)';
+          topStartX = 'cale(0vh - 0%)';
           break;
         case "right":
           rightStartX = 'calc(10vw - 50%)';
@@ -525,17 +534,17 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
 }
 
 const letterSceneStyle = {
-  height: "200vh",
+  height: "800vh",
 };
 
 export default function LetterScene() {
   return (
     <div style={letterSceneStyle}>
       <TextMotion></TextMotion>
-      <Envelope imageEndLocation="center" imageStartLocation="left" step={2} totalStep={2} imageStartWidth={0.4} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
-      {/* <Envelope imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope imageEndLocation="center" imageStartLocation="left" step={2} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
+      <Envelope imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
       <Envelope imageEndLocation="left" imageStartLocation="left" step={4} totalStep={5} startWithFullImage={false}></Envelope>
-      <Envelope imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope> */}
+      <Envelope imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope>
     </div>
   );
 }
