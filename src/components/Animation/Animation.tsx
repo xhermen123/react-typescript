@@ -130,56 +130,158 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
   const imageStartFullScreenAndRightAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(10vw - 50%)', 'calc(10vw - 50%)', 'calc(0vw - 0%)']);
   const imageStartFullScreenAndLeftAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(50vw - 50%)', 'calc(50vw - 50%)', 'calc(0vw - 0%)']);
 
-  let bottomStartY = '60vh';
-  let bottomStartX = '0vh';
-  let topStartY = '-60vh';
-  let topStartX = '0vh';
-  let rightStartX = '60vw';
-  let rightStartY = '0vw';
-  let leftStartX = '-60vw';
-  let leftStartY = '0vw';
+  let bottomStartY = 'calc(60vh - 0%)';
+  let bottomStartX = 'calc(0vh - 0%)';
+  let topStartY = 'calc(-60vh - 0%)';
+  let topStartX = 'cale(0vh - 9%)';
+  let rightStartX = 'calc(60vw - 0%)';
+  let rightStartY = 'calc(0vw - 0%)';
+  let leftStartX = 'calc(-60vw - 0%)';
+  let leftStartY = 'calc(0vw - 0%)';
 
   switch (imageStartLocation) {
     case "bottom":
       switch (imageEndLocation) {
+        case "center":
+          bottomStartX = 'calc(0vw - 0%)';
+          bottomStartY = 'calc(50vh - 0%)';
+          break;
         case "bottom":
-          
+          // rightStartX = 'calc(10vw - 50%)';
+          // rightStartY = 'calc(0vh - 50%)';
           break;
         case "top":
-      
+          topStartX = 'calc(0vw - 0%)';
+          topStartY = 'calc(40vh - -100%)';
           break;
         case "right":
-          
+          rightStartX = 'calc(10vw - 50%)';
+          rightStartY = 'calc(0vh - (-50%))';
           break;
         case "left":
-          
+          leftStartX = 'calc(-10vw - (-50%))';
+          leftStartY = 'calc(0vh - (-50%))';
           break;
         default:
       }
 
       break;
     case "top":
+      switch (imageEndLocation) {
+        case "center":
+          bottomStartX = 'calc(0vw - 0%)';
+          bottomStartY = 'calc(-50vh - 0%)';
+          break;
+        case "bottom":
+          bottomStartX = 'calc(0vh - 0%)';
+          bottomStartY = 'calc(-40vh - 100%)';
+          break;
+        case "top":
       
+          break;
+        case "right":
+          rightStartX = 'calc(10vw - 50%)';
+          rightStartY = 'calc(0vh - 50%)';
+          break;
+        case "left":
+          leftStartX = 'calc(-10vw - (-50%))';
+          leftStartY = 'calc(0vh - 50%)';
+          break;
+        default:
+      }
+
       break;
     case "right":
-      
+      switch (imageEndLocation) {
+        case "center":
+          bottomStartX = 'calc(50vw - 0%)';
+          bottomStartY = 'calc(0vh - 0%)';
+          break;
+        case "bottom":
+          bottomStartX = 'calc(50vw - 0%)';
+          bottomStartY = 'calc(10vh - 50%)';
+          break;
+        case "top":
+          topStartX = 'calc(50vw - 0%)';
+          topStartY = 'calc(-10vh - -50%)';
+          break;
+        case "right":
+          rightStartX = 'calc(0vw - 0%)';
+          rightStartY = 'calc(0vh - 0%)';
+          break;
+        case "left":
+          leftStartX = 'calc(40vw - -100%)';
+          leftStartY = 'calc(0vh - 0%)';
+          break;
+        default:
+      }
+
       break;
     case "left":
-      
+      switch (imageEndLocation) {
+        case "center":
+          bottomStartX = 'calc(-50vw - 0%)';
+          bottomStartY = 'calc(0vh - 0%)';
+          break;
+        case "bottom":
+          bottomStartX = 'calc(-50vw - 0%)';
+          bottomStartY = 'calc(10vh - 50%)';
+          break;
+        case "top":
+          topStartX = 'calc(-50vw - 0%)';
+          topStartY = 'calc(-10vh - -50%)';
+          break;
+        case "right":
+          rightStartX = 'calc(-40vw - 100%)';
+          rightStartY = 'calc(0vh - 0%)';
+          break;
+        case "left":
+          leftStartX = 'calc(0vw - 0%)';
+          leftStartY = 'calc(0vh - 0%)';
+          break;
+        default:
+      }
+
+      break;
+    case "center":
+      switch (imageEndLocation) {
+        case "center":
+          // bottomStartX = 'calc(0vw - 0%)';
+          // bottomStartY = 'calc(10vh - 50%)';
+          break;
+        case "bottom":
+          bottomStartX = 'calc(0vw - 0%)';
+          bottomStartY = 'calc(10vh - 50%)';
+          break;
+        case "top":
+          topStartX = 'calc(0vw - 0%)';
+          topStartY = 'calc(-10vh - -50%)';
+          break;
+        case "right":
+          rightStartX = 'calc(10vw - 50%)';
+          rightStartY = 'calc(0vh - 0%)';
+          break;
+        case "left":
+          leftStartX = 'calc(-10vw - -50%)';
+          leftStartY = 'calc(0vh - 0%)';
+          break;
+        default:
+      }
+
       break;
     default:
      
   }
 
-  const imageBottomPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartY, bottomStartY, '0vh']);
-  const imageTopPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartY, topStartY, '0vh']);
-  const imageRightPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartX, rightStartX, '0vw']);
-  const imageLeftPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartX, leftStartX, '0vw']);
+  const imageBottomPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartY, bottomStartY, 'calc(0vh - 0%)']);
+  const imageTopPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartY, topStartY, 'calc(0vh - 0%)']);
+  const imageRightPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartX, rightStartX, 'calc(0vw - 0%)']);
+  const imageLeftPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartX, leftStartX, 'calc(0vw - 0%)']);
 
-  const imageBottomPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartX, bottomStartX, '0vw']);
-  const imageTopPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartX, topStartX, '0vh']);
-  const imageRightPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartY, rightStartY, '0vw']);
-  const imageLeftPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartY, leftStartY, '0vw']);
+  const imageBottomPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartX, bottomStartX, 'calc(0vw - 0%)']);
+  const imageTopPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartX, topStartX, 'calc(0vw - 0%)']);
+  const imageRightPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartY, rightStartY, 'calc(0vh - 0%)']);
+  const imageLeftPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartY, leftStartY, 'calc(0vh - 0%)']);
 
   // Main Animation Section
   const imageStartFullScreenHeightYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, step / totalStep], ['100vh', '100vh', '60vh']);
@@ -194,14 +296,14 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
   const textOpacityAnim = useTransform(scrollYProgress, [0, (step - 7 / 10) / totalStep, (step - 3 / 10) / totalStep], [0, 0, 1]);
   const sizeAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, step / totalStep], ['100%', '100%', '90%']);
   
-  const zoomAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [zoomSize, zoomSize, '0.9']);
+  const zoomAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [startWithFullImage ? zoomSize : imageStartWidth, startWithFullImage ? zoomSize : imageStartWidth, imageEndWidth]);
 
   scrollYProgress.onChange(x => {
     setFfLayer(x > (step - 1) / totalStep && x < step / totalStep ? 0 : -1);
     // setFfVisibility(((x > (step - 1) / totalStep) && (x < step / totalStep)) ? 'visible' : 'hidden')
     let animImage = document.getElementById("animation_image");
 
-    if (animImage && animImage.clientHeight && animImage.clientWidth) {
+    if (animImage && animImage.clientHeight && animImage.clientWidth && startWithFullImage) {
       setZoomSize(Math.max(window.innerWidth / animImage?.clientWidth, window.innerHeight / animImage?.clientHeight));
     }
   })
@@ -209,7 +311,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
   let textSectionStyle = {
     height: '100vh',
     flex: '0 0 40vw',
-    display: "flex",
+    display: imageEndLocation == "center" ? "none" : "flex",
     alignItems: "center",
     justifyContent: "center"
   };
@@ -242,6 +344,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
     
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
+        x: startWithFullImage ? 0 : imageBottomPosXAnim,
         y: startWithFullImage ? imageStartFullScreenAndBottomAnim : imageBottomPosYAnim,
         justifyContent: "center",
       };
@@ -258,6 +361,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
       textSectionStyle.flex = "0 0 40vh";
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
+        x: startWithFullImage ? 0 : imageTopPosXAnim,
         y: startWithFullImage ? imageStartFullScreenAndTopAnim : imageTopPosYAnim,
         justifyContent: "center"
       };
@@ -275,6 +379,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
         x: startWithFullImage ? imageStartFullScreenAndRightAnim : imageRightPosXAnim,
+        y: startWithFullImage ? 0 : imageRightPosYAnim
         // paddingLeft: '100px',
         // justifyContent: "flex-end",
       };
@@ -292,6 +397,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
         x: startWithFullImage ? imageStartFullScreenAndLeftAnim : imageLeftPosXAnim,
+        y: startWithFullImage ? 0 : imageLeftPosYAnim
         // paddingRight: '100px',
         // justifyContent: "flex-start",
       };
@@ -309,6 +415,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
       textSectionStyle.flex = "0 0 40vh";
       imageSectionStyle = {
         ...imageSectionDefaultStyle,
+        x: startWithFullImage ? 0 : imageBottomPosXAnim,
         y: startWithFullImage ? imageStartFullScreenAndRightAnim : imageBottomPosYAnim,
         // justifyContent: "flex-end",
       };
@@ -418,17 +525,17 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
 }
 
 const letterSceneStyle = {
-  height: "800vh",
+  height: "200vh",
 };
 
 export default function LetterScene() {
   return (
     <div style={letterSceneStyle}>
       <TextMotion></TextMotion>
-      <Envelope imageEndLocation="right" imageStartLocation="left" step={2} totalStep={5} imageStartWidth="100%" imageEndWidth="50%" startWithFullImage={true}></Envelope>
-      <Envelope imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope imageEndLocation="center" imageStartLocation="left" step={2} totalStep={2} imageStartWidth={0.4} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
+      {/* <Envelope imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} startWithFullImage={false}></Envelope>
       <Envelope imageEndLocation="left" imageStartLocation="left" step={4} totalStep={5} startWithFullImage={false}></Envelope>
-      <Envelope imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope> */}
     </div>
   );
 }
