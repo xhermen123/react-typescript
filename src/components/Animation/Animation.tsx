@@ -97,7 +97,7 @@ function getAnimationInputRange(step: number) {
 
 }
 
-function Envelope({ children, imageEndLocation, imageStartLocation, step, totalStep, imageStartWidth, imageEndWidth, imageStartHeight, imageEndHeight, startWithFullImage }: any) {
+function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, totalStep, imageStartWidth, imageEndWidth, imageStartHeight, imageEndHeight, startWithFullImage }: any) {
   const [ffLayer, setFfLayer] = useState(0);
   const [ffVisibility, setFfVisibility] = useState('hidden');
   const [zoomSize, setZoomSize] = useState(1);
@@ -477,7 +477,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
             margin: "auto"
           }}
         >
-          <div
+          {/* <div
             style={{
               fontSize: '40px',
               paddingRight: "100px"
@@ -500,7 +500,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
               borderBottom: "2px solid #3e7bd6",
               marginTop: "20px"
             }}></span>
-          </div>
+          </div> */}
           <div>
             <p
               style={{
@@ -508,11 +508,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
                 margin: '0'
               }}
             >
-              When you work with an application, you open it, do some changes, and then you close it. 
-              This is much like a Session. The computer knows who you are. It knows when you start the 
-              application and when you end. But on the internet there is one problem: 
-              the web server does not know who you are or what you do, because the HTTP 
-              address doesn't maintain state.
+              {text}
             </p>
           </div>
         </div>
@@ -526,7 +522,7 @@ function Envelope({ children, imageEndLocation, imageStartLocation, step, totalS
             ...imageStyle,
             objectFit: "cover"
           }}
-          src="/assets/image.jpg"
+          src={imageSrc}
         />
       </motion.div>
     </motion.div>
@@ -541,10 +537,10 @@ export default function LetterScene() {
   return (
     <div style={letterSceneStyle}>
       <TextMotion></TextMotion>
-      <Envelope imageEndLocation="center" imageStartLocation="left" step={2} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
-      <Envelope imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
-      <Envelope imageEndLocation="left" imageStartLocation="left" step={4} totalStep={5} startWithFullImage={false}></Envelope>
-      <Envelope imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="center" imageStartLocation="left" step={2} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
+      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
+      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="left" imageStartLocation="left" step={4} totalStep={5} startWithFullImage={false}></Envelope>
+      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope>
     </div>
   );
 }
