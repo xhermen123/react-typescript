@@ -130,7 +130,7 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
   const slideFadeOutAnim = useTransform(scrollYProgress, [step / totalStep, (step + 1 / 10) / totalStep], [1, 0]);
 
   // Start & End Fade
-  const slideFadeInOutAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 7 / 10) / totalStep, step / totalStep, (step + 3 / 10) / totalStep, 1], [startSlideOpacity, startSlideOpacity, 1, 1, endSlideOpacity, endSlideOpacity]);
+  const slideFadeInOutAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 7 / 10) / totalStep, (step - 2 / 10) / totalStep, (step) / totalStep, 1], [startSlideOpacity, startSlideOpacity, 1, 1, endSlideOpacity, endSlideOpacity]);
 
   // Start Animiation Section
   const imageStartFullScreenAndBottomAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], ['calc(10vh - 50%)', 'calc(10vh - 50%)', 'calc(0vh - 0%)']);
@@ -160,7 +160,7 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
           break;
         case "top":
           topStartX = 'calc(0vw - 0%)';
-          topStartY = 'calc(40vh - -100%)';
+          topStartY = 'calc(40vh - -50%)';
           break;
         case "right":
           rightStartX = 'calc(10vw - 50%)';
@@ -182,7 +182,7 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
           break;
         case "bottom":
           bottomStartX = 'calc(0vh - 0%)';
-          bottomStartY = 'calc(-40vh - 100%)';
+          bottomStartY = 'calc(-40vh - 50%)';
           break;
         case "top":
           topStartY = 'calc(-60vh - 0%)';
@@ -219,7 +219,7 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
           rightStartY = 'calc(0vh - 0%)';
           break;
         case "left":
-          leftStartX = 'calc(40vw - -100%)';
+          leftStartX = 'calc(40vw - -50%)';
           leftStartY = 'calc(0vh - 0%)';
           break;
         default:
@@ -241,7 +241,7 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
           topStartY = 'calc(-10vh - -50%)';
           break;
         case "right":
-          rightStartX = 'calc(-40vw - 100%)';
+          rightStartX = 'calc(-40vw - 50%)';
           rightStartY = 'calc(0vh - 0%)';
           break;
         case "left":
@@ -282,10 +282,10 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
      
   }
 
-  const imageBottomPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartY, bottomStartY, 'calc(0vh - 0%)']);
-  const imageTopPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartY, topStartY, 'calc(0vh - 0%)']);
-  const imageRightPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartX, rightStartX, 'calc(0vw - 0%)']);
-  const imageLeftPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartX, leftStartX, 'calc(0vw - 0%)']);
+  const imageBottomPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartY, bottomStartY, 'calc(60vh - 50%)']);
+  const imageTopPosYAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartY, topStartY, 'calc(-60vh - -50%)']);
+  const imageRightPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [rightStartX, rightStartX, 'calc(60vw - 50%)']);
+  const imageLeftPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [leftStartX, leftStartX, 'calc(-60vw - -50%)']);
 
   const imageBottomPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [bottomStartX, bottomStartX, 'calc(0vw - 0%)']);
   const imageTopPosXAnim = useTransform(scrollYProgress, [0, (step - 1) / totalStep, (step - 3 / 10) / totalStep], [topStartX, topStartX, 'calc(0vw - 0%)']);
@@ -445,7 +445,7 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
     left: "0",
     objectFit: useMotionValue("cover"),
     display: "flex",
-    background: "linear-gradient(0deg, #32324ecc, #32324ecc), url(/assets/background.jpg) center/cover no-repeat",
+    // background: "linear-gradient(0deg, #32324ecc, #32324ecc), url(/assets/background.jpg) center/cover no-repeat",
     flexDirection: layoutDirection,
     overflow: "hidden",
     // zIndex: ffLayer,
@@ -530,17 +530,33 @@ function Envelope({ text, imageSrc, imageEndLocation, imageStartLocation, step, 
 }
 
 const letterSceneStyle = {
-  height: "800vh",
+  height: "1000vh",
 };
 
 export default function LetterScene() {
+  let txt = `The processor can not always parse interpolations with right things. 
+              But you can use interpolation-tagging to help it. If you have ideas 
+              to make it more intelligent, feel free to send a PR or share your 
+              solution by an new issue.`;
+
   return (
     <div style={letterSceneStyle}>
       <TextMotion></TextMotion>
-      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="center" imageStartLocation="left" step={2} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
-      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="top" imageStartLocation="left" step={3} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={false}></Envelope>
-      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="left" imageStartLocation="left" step={4} totalStep={5} startWithFullImage={false}></Envelope>
-      <Envelope text={(<p>Hello</p>)} imageSrc="/assets/image.jpg" imageEndLocation="bottom" imageStartLocation="left" step={5} totalStep={5} startWithFullImage={false}></Envelope>
+      <div style={{
+        width: "100%",
+        height: "100vh",
+        position: "fixed",
+        bottom: "0",
+        left: "0",
+        objectFit: "cover",
+        display: "flex",
+        background: "linear-gradient(0deg, #32324ecc, #32324ecc), url(/assets/background.jpg) center/cover no-repeat",
+        overflow: "hidden",
+      }}></div>
+      <Envelope text={(<p>{txt}</p>)} imageSrc="/assets/image.jpg" imageEndLocation="bottom" step={2} totalStep={5} imageStartWidth={1} imageEndWidth={0.9} startWithFullImage={true}></Envelope>
+      <Envelope text={(<p>{txt}</p>)} imageSrc="/assets/image.jpg" imageStartLocation="bottom" imageEndLocation="top" step={3} totalStep={5} imageStartWidth={0.9} imageEndWidth={0.5} startWithFullImage={false}></Envelope>
+      <Envelope text={(<p>{txt}</p>)} imageSrc="/assets/image.jpg" imageStartLocation="top" imageEndLocation="right" step={4} totalStep={5} imageStartWidth={0.5} imageEndWidth={0.8} startWithFullImage={false}></Envelope>
+      <Envelope text={(<p>{txt}</p>)} imageSrc="/assets/image.jpg" imageStartLocation="right" imageEndLocation="left" step={5} totalStep={5} imageStartWidth={0.8} imageEndWidth={1} startWithFullImage={false}></Envelope>
     </div>
   );
 }
